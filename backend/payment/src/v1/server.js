@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 
-const config = require('./config'); //importing MONGODB_URL, PORT
+const config = require('./config'); //importing MONGODB_URI, PORT
 const sslOptions = require('./ssl'); //importing ssl key and certification
 
 const app = express();
