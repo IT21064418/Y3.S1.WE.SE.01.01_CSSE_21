@@ -18,13 +18,6 @@ const paymentRoutes = require('./routes/payments');
 
 app.use('/api', paymentRoutes);
 
-// app.use('/',  (req,res,next) => {
-
-//     return res.status(200).json({"msg":"Hello from payment"})
-
-// });
-
-
 //mongodb connection
 mongoose.set('strictQuery', false);
 
