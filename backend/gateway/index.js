@@ -8,8 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/userProfile', proxy('http://localhost:8001'));
+app.use('/product', proxy('http://localhost:8002')); //product
 app.use('/payment', proxy('https://localhost:8003'));
-app.use('/', proxy('http://localhost:8002')); //product
+app.use('/delivery',proxy('http://localhost:8004'));
 
 app.listen(8000, () => {
 
