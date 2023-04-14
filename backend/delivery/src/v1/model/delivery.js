@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const deliveryStatus = ['pending', 'confirmed', 'dispatched', 'delivered'];
+const deliveryServices = ['ups','fedex','dhl'];
 
 const deliverySchema = new mongoose.Schema({
 
@@ -26,6 +27,7 @@ const deliverySchema = new mongoose.Schema({
     },
     deliveryService: {
         type: String,
+        enum: deliveryServices,
         required: true
     },
     deliveryAddress: {

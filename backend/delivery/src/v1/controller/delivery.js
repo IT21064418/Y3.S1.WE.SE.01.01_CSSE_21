@@ -1,6 +1,36 @@
 const mongoose = require('mongoose');
 const Delivery = require('../model/delivery');
 
+function validateDelivery(delivery){
+
+    let errors = [];
+
+    if(delivery.orderedItems.length <= 0){
+        errors.push("Amount of ordered items should be greater than 0.")
+    } else {
+        delivery.orderedItems.forEach(item => {
+            if (item.quantity <= 0){
+                errors.push("Quantity of "+ item.name +" should be greater than 0.");
+            }
+    
+            if (item.weight <= 0){
+                errors.push("Weight of "+ item.name +" should be greater than 0.");
+            }
+        });
+    }
+    
+    if(delivery.deliveryFee < 0){
+        errors.push("delivery fee should be greater than or equal to 0.")
+    }
+
+    if (errors.length > 0){
+        return errors;
+    } else {
+        return true;
+    }
+
+}
+
 exports.calcDeliveryFee = (req, res) => {
 
     const deliveryServices = [
@@ -35,7 +65,7 @@ exports.createDelivery = async (req, res) => {
 
     const deliveryObj = {
 
-        orderId: new mongoose.Types.ObjectId(),
+        deliveryId: new mongoose.Types.ObjectId,
         orderedItems: req.body.orderedItems,
         totalWeight: req.body.totalWeight,
         deliveryService: req.body.deliveryService,
@@ -46,15 +76,21 @@ exports.createDelivery = async (req, res) => {
 
     }
 
-    try{
-        const newDelivery = new Delivery(deliveryObj);
-        const delivery = await newDelivery.save();
+    let valid = validateDelivery(deliveryObj);
 
-        if(delivery){
-            return res.status(201).json({ delivery });
+    if(valid == true){
+        try{
+            const newDelivery = new Delivery(deliveryObj);
+            const delivery = await newDelivery.save();
+    
+            if(delivery){
+                return res.status(201).json({ delivery });
+            }
+        }catch(error){
+            return res.status(400).json({ error });
         }
-    }catch(error){
-        return res.status(400).json({ error });
+    }else {
+        return res.status(402).json({ valid });
     }
 
 }
