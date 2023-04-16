@@ -24,7 +24,7 @@ exports.addPayment = async (req, res) => {
         return res.status(400).json({ error });
     }
 
-};
+}
 
 exports.getPayments = async (req, res) => {
 
@@ -35,7 +35,7 @@ exports.getPayments = async (req, res) => {
         return res.status(400).json({ error });
     }
 
-};
+}
 
 exports.getPayment = async (req, res) => {
 
@@ -47,7 +47,7 @@ exports.getPayment = async (req, res) => {
         return res.status(400).json({ error });
     }
     
-};
+}
 
 exports.deletePayment = async (req, res) => {
 
