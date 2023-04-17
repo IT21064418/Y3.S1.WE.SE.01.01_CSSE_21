@@ -31,6 +31,10 @@ const paymentSchema = new mongoose.Schema({
         enum: paymentMethods,
         required: true
     },
+    buyerEmail: {
+        type: String,
+        required: true
+    },
     purchasedItems: {
         type: [
             {
