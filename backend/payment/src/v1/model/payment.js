@@ -36,6 +36,10 @@ const paymentSchema = new mongoose.Schema({
         enum: paymentMethods,
         required: true
     },
+    buyerEmail: {
+        type: String,
+        required: true
+    },
     purchasedItems: {
         type: [
             {
@@ -45,7 +49,7 @@ const paymentSchema = new mongoose.Schema({
             }
         ],
         required: true
-    },
+    }
 }, {timestamps: true});
 
 module.exports = mongoose.model('Payment', paymentSchema);
