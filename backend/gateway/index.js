@@ -7,9 +7,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/userProfile', proxy('http://localhost:8001'));
+app.use('/authentication', proxy('http://localhost:5000')); //auth-service
+app.use('/userProfile', proxy('http://localhost:5001'));
 app.use('/payment', proxy('http://localhost:8003'));
-app.use('/', proxy('http://localhost:8002')); //product
+app.use('/product', proxy('http://localhost:8002')); //product
+app.use('/delivery',proxy('http://localhost:8004'));
+
 
 app.listen(8000, () => {
 
