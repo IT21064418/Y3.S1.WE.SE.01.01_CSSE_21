@@ -4,8 +4,13 @@ const paymentMethods = ['creditCard', 'paypal', 'payhere'];
 
 const paymentSchema = new mongoose.Schema({
 
-    buyerName: {
+    buyerId: {
         type: String,
+        required: true,
+        trim: true
+    },
+    amount: {
+        type: Number,
         required: true,
         trim: true
     },
