@@ -1,15 +1,26 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const config = require('./config');
+const userRoutes = require('./routes/userRoutes');
+const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
 
-app.use('/',  (req,res,next) => {
+app.use(bodyParser.json());
 
-    return res.status(200).json({"msg":"Hello from customer"})
+mongoose.connect(config.dbURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  //useCreateIndex: true,
+}).then(() => {
 
-});
+      console.log("Database connected");
+  
+  }).catch((err) => console.log('DB connction faliure', err));
 
-app.listen(8001, () => {
+app.use('/api/users', authMiddleware.authenticateUser, userRoutes);
 
-    console.log('user profile service is listening to port 8001');
-
+app.listen(config.port, () => {
+  console.log(`Server started on port ${config.port}`);
 });
