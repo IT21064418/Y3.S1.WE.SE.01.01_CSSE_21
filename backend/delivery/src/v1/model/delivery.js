@@ -10,6 +10,10 @@ const deliverySchema = new mongoose.Schema({
         ref: 'Delivery',
         required: true
     },
+    buyerId: {
+        type: String,
+        required: true
+    },
     orderedItems: {
         type: [
             {
