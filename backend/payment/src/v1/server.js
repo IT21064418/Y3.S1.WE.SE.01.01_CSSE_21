@@ -6,7 +6,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const config = require('./config'); //importing MONGODB_URI, PORT
-const sslOptions = require('./ssl'); //importing ssl key and certification
+// const sslOptions = require('./ssl'); //importing ssl key and certification
 
 const app = express();
 
@@ -29,8 +29,12 @@ mongoose.connect(config.MONGODB_URI, {
 }).catch((err) => console.log('DB connection error', err))
 
 //server
-const paymentServer = https.createServer(sslOptions, app);
-
-paymentServer.listen(config.PORT, () => {
+app.listen(config.PORT,() => {
     console.log(`payment service is running on port ${config.PORT}`);
-})
+});
+
+// const paymentServer = https.createServer(sslOptions, app);
+
+// paymentServer.listen(config.PORT, () => {
+//     console.log(`payment service is running on port ${config.PORT}`);
+// })

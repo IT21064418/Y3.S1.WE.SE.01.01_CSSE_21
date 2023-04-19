@@ -3,3 +3,4 @@ package-lock.json/
 ssl.js
 config.js
 cert
+.env

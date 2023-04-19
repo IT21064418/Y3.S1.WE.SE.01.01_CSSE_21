@@ -66,24 +66,14 @@ async function paymentConfirmation(buyerName, creditCard, email){
 
 }
 
-exports.addPayment = async (req, res) => {
+exports.addPayment = async (paymentObj) => {
 
-    const paymentObj = {
-
-        buyerName: req.body.buyerName,
-        shippingAddress: req.body.shippingAddress,
-        shippingMethod: req.body.shippingMethod,
-        creditCard: req.body.creditCard,
-        paymentMethod: req.body.paymentMethod,
-        buyerEmail: req.body.buyerEmail,
-        purchasedItems: req.body.purchasedItems
-
-    }
-   
     try{
         const newPayment = new Payment(paymentObj);
         const payment = await newPayment.save();
         if(payment){
+            return payment;
+
             // let email = paymentConfirmation(paymentObj.buyerName, paymentObj.creditCard, paymentObj.buyerEmail);
 
             // if(email === true){
@@ -92,46 +82,82 @@ exports.addPayment = async (req, res) => {
             // else{
             //     return res.status(500).json(`Cannot send Payment email confirmation: ${email}`);
             // }              
-            return res.status(201).json("Payment Succesfull");
         }
     } catch (error){
-        return res.status(400).json({ error });
+        return error;
     }
 
 }
 
-exports.getPayments = async (req, res) => {
+exports.getPayments = async () => {
 
     try {
         const payments = await Payment.find({});
-        return res.status(200).json({ payments });
+        return payments;
     } catch (error) {
-        return res.status(400).json({ error });
+        return error;
     }
 
 }
 
-exports.getPayment = async (req, res) => {
+exports.getPaymentsByBuyer = async (buyersId) => {
 
     try{
-        let paymentId = req.params.id;
+        const payments = await Payment.find({buyerId: `${buyersId}`});
+
+        if(!payments){
+            return 'No payments done by the buyer'
+        }
+
+        return payments;
+    } catch(error){
+        return error;
+    }
+
+}
+
+exports.getPayment = async (paymentId) => {
+
+    try{
         const payment = await Payment.findById(paymentId);
-        return res.status(200).json({ payment });
+        return payment;
     } catch (error){
-        return res.status(400).json({ error });
+        return error;
     }
     
 }
 
-exports.deletePayment = async (req, res) => {
+exports.deletePayment = async (paymentId) => {
 
     try{
-        let paymentId = req.params.id;
-        await Payment.findByIdAndDelete(paymentId).then(() => {
-            return res.status(200).json("Payment Deleted");
-        });
+        const payment = await Payment.findByIdAndDelete(paymentId)
+
+        if(!payment) {
+            return 'Payment not Found';
+        } else{
+            return 'Payment deleted';
+        }
+
      }catch (error){
-        return res.status(400).json({ error });
+        return error;
+    }
+
+}
+
+exports.SubscribeEvents = async (payload) => {
+
+    const { event, data } = payload;
+
+    const { paymentId } = data;
+
+    switch(event){
+        case 'GET_PAYMENT':
+            this.getPayment(paymentId);
+            break;
+        case 'TESTING':
+            console.log("Working subscriber......")
+        default:
+            break;
     }
 
 }
