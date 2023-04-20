@@ -113,10 +113,10 @@ exports.getDelivery = async (deliveryId) => {
     
 };
 
-exports.getDeliveriesByBuyer = async (buyerId) => {
+exports.getDeliveriesByBuyer = async (buyersId) => {
 
     try{
-        const deliveries = await Delivery.find({buyerId: `${buyerId}`});
+        const deliveries = await Delivery.find({buyerId: buyersId});
 
         if (!deliveries) {
             return 'No deliveries for buyer';
@@ -124,6 +124,7 @@ exports.getDeliveriesByBuyer = async (buyerId) => {
 
         return deliveries;
     } catch(error){
+        console.log(error);
         return error;
     }
 
