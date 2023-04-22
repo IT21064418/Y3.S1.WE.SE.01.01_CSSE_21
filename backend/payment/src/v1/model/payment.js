@@ -4,8 +4,13 @@ const paymentMethods = ['creditCard', 'paypal', 'payhere'];
 
 const paymentSchema = new mongoose.Schema({
 
-    buyerName: {
+    buyerId: {
         type: String,
+        required: true,
+        trim: true
+    },
+    amount: {
+        type: Number,
         required: true,
         trim: true
     },
@@ -31,6 +36,10 @@ const paymentSchema = new mongoose.Schema({
         enum: paymentMethods,
         required: true
     },
+    buyerEmail: {
+        type: String,
+        required: true
+    },
     purchasedItems: {
         type: [
             {
@@ -40,7 +49,7 @@ const paymentSchema = new mongoose.Schema({
             }
         ],
         required: true
-    },
+    }
 }, {timestamps: true});
 
 module.exports = mongoose.model('Payment', paymentSchema);

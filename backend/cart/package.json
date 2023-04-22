@@ -1,0 +1,25 @@
+{
+  "name": "ecom_backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.36.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.4",
+    "nodemon": "^2.0.22",
+    "socket.io": "^4.6.1",
+    "stripe": "^12.1.1",
+    "validator": "^13.9.0"
+  }
+}
