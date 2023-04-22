@@ -12,6 +12,7 @@ app.use('/payment', proxy('http://localhost:8003')); //payment
 app.use('/product', proxy('http://localhost:8002')); //product
 app.use('/delivery',proxy('http://localhost:8004')); //delivery
 app.use('/authentication', proxy('http://localhost:5000')); //auth-service
+app.use('/ratingandreviews', proxy('http://localhost:8005')); //ratingandreviws
 
 app.listen(8000, () => {
 
