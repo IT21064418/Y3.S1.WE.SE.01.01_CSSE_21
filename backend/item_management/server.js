@@ -2,26 +2,16 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
-const cors = require('cors');
-const ratingroutes = require('./routes/ratingandreviews')
+const item_management = require('./routes/itemmanagement')
 
 //express app
 const app = express();
 
 //middleware
 app.use(express.json())
-app.use(cors());
 
 //routes
-app.use('/api/ratingandreviews',ratingroutes)
-
-app.get('/api/ratingandreviews/:id', (req, res) => {
-    const id = req.params.id;
-    // retrieve the review data and send it in the response
-    res.header('Access-Control-Allow-Origin', '*'); // allow all origins
-    res.json(reviewData);
-  });
-
+app.use('/api/itemmanagement',item_management)
 
 //connect to db
 mongoose.connect('mongodb+srv://it21064418:it21064418@dscluster.qczuvg7.mongodb.net/DS_Project?retryWrites=true&w=majority')
