@@ -3,7 +3,18 @@ const mongoose = require('mongoose')
 
 //get all 
 const getallreview = async(req,res) =>{
-    const reviews = await Review.find({}).sort({createdAt:-1})
+    const aOptions = [
+     { $lookup: {
+        from : "items",
+        localField : "productID",
+        foreignField : "_id",
+        as: "product"
+      }}
+    ];
+
+    
+
+    const reviews = await Review.aggregate(aOptions).exec();
 
     res.status(200).json(reviews)
 }
@@ -27,10 +38,10 @@ const getreview = async (req,res) =>{
 
 // //create new
 const createreview = async (req,res) =>{
-    const {review_title,rating,Description} = req.body
+    const {productID, review_title,rating,Description} = req.body
 
     try{
-        const review = await Review.create({review_title,rating,Description})
+        const review = await Review.create({productID ,review_title, rating, Description})
         res.status(200).json(review)
     }catch(error){
         res.status(400).json({error:error.message})
