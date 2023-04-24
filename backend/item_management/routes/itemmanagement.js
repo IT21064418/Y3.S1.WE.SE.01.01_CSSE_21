@@ -1,4 +1,5 @@
 const express = require('express');
+const { authenticateUser } = require('../middleware/auth');
 const {
     createitem,
     getallitems,
@@ -10,18 +11,18 @@ const {
 const router = express.Router();
 
 //GET all 
-router.get('/',getallitems)
+router.get('/', getallitems)
 
 //GET a single 
 router.get('/:id',getitem)
 
 //POST a new 
-router.post('/',createitem)
+router.post('/',authenticateUser, createitem)
 
 //DELETE a 
-router.delete('/:id', deleteitem)
+router.delete('/:id',authenticateUser, deleteitem)
 
 //UPDATE a 
-router.patch('/:id',updateitem)
+router.patch('/:id',authenticateUser, updateitem)
 
 module.exports = router
