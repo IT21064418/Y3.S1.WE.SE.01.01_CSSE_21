@@ -1,19 +1,21 @@
 const express = require('express');
 const { addPayment, getPayments, getPayment, deletePayment, SubscribeEvents, getPaymentsByBuyer } = require('../controller/payment');
+const { authenticateUser } = require('../middlewares/auth');
 const { publishDeliveryEvent } = require('../index');
 const router = express.Router();
 
-router.post('/v1/payments', async(req, res) => {
+router.post('/v1/payments',authenticateUser, async(req, res) => {
 
     try{
         const paymentObj = {
 
-            buyerId: req.body.buyerId,
+            buyerId: req.user,
             amount: req.body.amount,
             shippingAddress: req.body.shippingAddress,
             shippingMethod: req.body.shippingMethod,
             creditCard: req.body.creditCard,
             paymentMethod: req.body.paymentMethod,
+            buyerEmail: req.body.buyerEmail,
             purchasedItems: req.body.purchasedItems
 
         } 
@@ -38,10 +40,10 @@ router.get('/v1/payments', async(req, res) => {
 
 });
 
-router.get('/v1/payments/byBuyer/:id', async(req, res) => {
+router.get('/v1/payments/byBuyer/:id', authenticateUser, async(req, res) => {
 
     try{
-        let buyerId = req.params.id;
+        let buyerId = req.user;
 
         const response = await getPaymentsByBuyer(buyerId);
 

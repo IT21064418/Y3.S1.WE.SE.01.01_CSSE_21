@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { createDelivery, getDeliveries, getDelivery, deleteDelivery, calcDeliveryFee, SubscribeEvents } = require('../controller/delivery');
+const { createDelivery, getDeliveries, getDelivery, deleteDelivery, calcDeliveryFee, SubscribeEvents, getDeliveriesByBuyer } = require('../controller/delivery');
+const { authenticateUser } = require('../middlewares/auth');
 const router = express.Router();
 
 router.post('/v1/deliveries', async (req, res) => {
@@ -49,15 +50,16 @@ router.get('/v1/deliveries/:id', async (req, res) => {
     }
 });
 
-router.get('/v1/deliveries/byBuyer/:id', async (req, res) => {
+router.get('/v1/deliveries/byBuyer/:id',authenticateUser, async (req, res) => {
 
     try{
-        const buyerId = req.params.id;
+        const buyerId = req.user;
 
         const response = await getDeliveriesByBuyer(buyerId);
 
         return res.status(200).json({ response });
     } catch (error){
+        console.log(error);
         return res.status(400).json({ error });
     }
 
@@ -68,13 +70,6 @@ router.post('/v1/deliveries/fees', async (req, res) => {
         const orderedItems = req.body.orderedItems;
 
         const response = await calcDeliveryFee(orderedItems);
-
-        // let type = typeof response;
-        // console.log(type);
-
-        // if(type == "string"){
-        //     return res.status(404).json({ message: 'Delivery not found' });
-        // }
 
         return res.status(200).json({ response });
     } catch(error){
