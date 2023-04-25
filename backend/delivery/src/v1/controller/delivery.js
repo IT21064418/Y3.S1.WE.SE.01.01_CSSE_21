@@ -31,13 +31,15 @@ function validateDelivery(delivery){
 
 }
 
-exports.calcDeliveryFee = async (orderedItems) => {
+exports.calcDeliveryFee = (req, res) => {
 
     const deliveryServices = [
         { service:'ups', feePerKg:20 },
         { service:'fedex', feePerKg:10 },
         { service:'dhl', feePerKg:18 },
     ];
+
+    const orderedItems = req.body.orderedItems;
 
     let totalWeight = 0;
     let deliveryFees = [];
@@ -55,16 +57,25 @@ exports.calcDeliveryFee = async (orderedItems) => {
 
     });
 
-    const deliveryFee = [
-        { weight: totalWeight},
-        {fees: deliveryFees}
-    ];
-
-    return deliveryFee;
+    res.json({ weight: totalWeight, fees: deliveryFees});
 
 }
 
-exports.createDelivery = async (deliveryObj) => {
+exports.createDelivery = async (req, res) => {
+
+    const deliveryObj = {
+
+        deliveryId: new mongoose.Types.ObjectId(),
+        buyerId: req.body.buyerId,
+        orderedItems: req.body.orderedItems,
+        totalWeight: req.body.totalWeight,
+        deliveryService: req.body.deliveryService,
+        deliveryAddress: req.body.deliveryAddress,
+        deliveryDate: req.body.deliveryDate,
+        deliveryFee: req.body.deliveryFee,
+        deliveryStatus: req.body.deliveryStatus
+
+    }
 
     let valid = validateDelivery(deliveryObj);
 
@@ -74,109 +85,54 @@ exports.createDelivery = async (deliveryObj) => {
             const delivery = await newDelivery.save();
     
             if(delivery){
-                return  delivery;
+                return res.status(201).json({ delivery });
             }
         }catch(error){
-            return error;
+            return res.status(400).json({ error });
         }
     }else {
-        return valid;
+        return res.status(402).json({ valid });
     }
 
 }
 
-exports.getDeliveries = async () => {
+exports.getDeliveries = async (req, res) => {
 
     try {
         const deliveries = await Delivery.find({});
-        return deliveries;
+        return res.status(200).json({ deliveries });
     } catch (error) {
-        return error;
+        return res.status(400).json({ error });
     }
 
 };
 
-exports.getDelivery = async (deliveryId) => {
+exports.getDelivery = async (req, res) => {
 
     try{
+        let deliveryId = req.params.id;
         const delivery = await Delivery.findById(deliveryId);
 
         if (!delivery) {
-            // return res.status(404).json({ message: 'Delivery not found' });
-            return 'Delivery not found';
+            return res.status(404).json({ message: 'Delivery not found' });
         }
 
-        return delivery;
+        return res.status(200).json({ delivery });
     } catch (error){
-        return error;
+        return res.status(400).json({ error });
     }
     
 };
 
-exports.getDeliveriesByBuyer = async (buyersId) => {
+exports.deleteDelivery = async (req, res) => {
 
     try{
-        const deliveries = await Delivery.find({buyerId: buyersId});
-
-        if (!deliveries) {
-            return 'No deliveries for buyer';
-        }
-
-        return deliveries;
-    } catch(error){
-        console.log(error);
-        return error;
-    }
-
-}
-
-exports.deleteDelivery = async (deliveryId) => {
-
-    try{
-        const delivery = await Delivery.findByIdAndDelete(deliveryId);
-
-        if(!delivery) {
-            return 'Delivery not Found';
-        }
-
-        return delivery;
+        let deliveryId = req.params.id;
+        await Delivery.findByIdAndDelete(deliveryId).then(() => {
+            return res.status(200).json("Delivery Deleted");
+        });
      }catch (error){
-        return error;
-    }
-
-}
-
-exports.getDeliveryStatus = async (deliveryId) => {
-
-    try{
-        const delivery = this.getDelivery(deliveryId);
-        deliveryStatus = delivery.deliveryStatus;
-
-        console.log(deliveryStatus);
-        return deliveryStatus;
-    } catch(error){
-        return error;
-    }
-
-}
-
-exports.SubscribeEvents = async (payload) => {
-
-    const { event, data } = payload;
-
-    const {deliveryId, deliveryStatus, orderedItems} = data;
-
-    switch(event){
-        case 'GET_DELIVERY_FEES':
-            this.calcDeliveryFee(orderedItems);
-            break;
-        case 'GET_DELIVERY_STATUS':
-            this.getDeliveryStatus(deliveryId);
-            break;
-        case 'TESTING':
-            console.log("Working subscriber......");
-        default:
-            break;
+        return res.status(400).json({ error });
     }
 
 }
