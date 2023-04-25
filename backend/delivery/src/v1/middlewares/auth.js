@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require('../config');
 
-function authenticateUser(req, res, next) {
+exports.authenticateUser = async (req, res, next) => {
 
     const token = req.header('Authorization');
 
@@ -17,8 +17,4 @@ function authenticateUser(req, res, next) {
         res.status(401).json({ error: 'Invalid authorization token.' });
     }
 
-  }
-
-module.exports = {
-    authenticateUser,
 };
