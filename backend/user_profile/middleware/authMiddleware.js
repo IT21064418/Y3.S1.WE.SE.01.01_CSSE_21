@@ -7,8 +7,8 @@ function authenticateUser(req, res, next) {
     return res.status(401).json({ error: 'Authorization token not found.' });
   }
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
-    req.user = decoded.user;
+    const decoded = jwt.verify(token.split(' ')[1], config.jwtSecret);
+    req.user = decoded.id;
     next();
   } catch (err) {
     res.status(401).json({ error: 'Invalid authorization token.' });

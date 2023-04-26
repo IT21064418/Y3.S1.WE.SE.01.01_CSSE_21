@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const ratingroutes = require('./routes/ratingandreviews');
 const config = require('./config');
+const amqpServer = require('./utils/amqpServer');
 
 //express app
 const app = express();
@@ -12,6 +13,9 @@ const app = express();
 //middleware
 app.use(express.json());
 app.use(cors());
+
+//rabbitMq Server
+amqpServer.connect();
 
 //routes
 app.use('/api/ratingandreviews',ratingroutes);

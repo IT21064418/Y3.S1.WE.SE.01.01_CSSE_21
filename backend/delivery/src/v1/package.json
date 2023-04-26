@@ -9,6 +9,7 @@
   "author": "supun kariyawasam",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.3",
     "axios": "^1.3.5",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",

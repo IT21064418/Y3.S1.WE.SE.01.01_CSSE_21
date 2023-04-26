@@ -1,13 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const amqp = require('amqplib');
+
 const config = require('./config');
 const userRoutes = require('./routes/userRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
 
+const amqpServer = require('./utils/amqpServer');
+
 const app = express();
 
 app.use(bodyParser.json());
+
+//rabbitmq connection
+amqpServer.connect().then(() => {
+  amqpServer.consumefromQueue(); 
+});
 
 mongoose.connect(config.dbURI, {
   useNewUrlParser: true,
@@ -15,9 +24,9 @@ mongoose.connect(config.dbURI, {
   //useCreateIndex: true,
 }).then(() => {
 
-      console.log("Database connected");
+  console.log("Database connected");
   
-  }).catch((err) => console.log('DB connction faliure', err));
+}).catch((err) => console.log('DB connction faliure', err));
 
 app.use('/api/users', authMiddleware.authenticateUser, userRoutes);
 

@@ -1,5 +1,6 @@
-const Review = require('../models/ratingre')
-const mongoose = require('mongoose')
+const Review = require('../models/ratingre');
+const mongoose = require('mongoose');
+const { connect, sendMessage } = require('../utils/amqpServer');
 
 //get all 
 const getallreview = async(req,res) =>{
@@ -11,8 +12,6 @@ const getallreview = async(req,res) =>{
         as: "product"
       }}
     ];
-
-    
 
     const reviews = await Review.aggregate(aOptions).exec();
 
@@ -42,6 +41,16 @@ const createreview = async (req,res) =>{
 
     try{
         const review = await Review.create({productID ,review_title, rating, Description})
+        const itemReview = {
+          review_title: review.review_title,
+          rating: review.rating,
+          Description: review.Description
+        }
+
+        const payload = { productID, itemReview };
+        console.log(payload);
+        prepForQueue("ITEMS",payload);
+
         res.status(200).json(review)
     }catch(error){
         res.status(400).json({error:error.message})
@@ -63,7 +72,7 @@ const deletereview = async (req, res) => {
     }
   
     res.status(200).json(review)
-  }
+}
 
 // update
 const updatereview = async (req, res) => {
@@ -82,9 +91,20 @@ const updatereview = async (req, res) => {
     }
   
     res.status(200).json(review)
+}
+
+//prepare the payload to send to queue
+async function prepForQueue(queueName, payload) {
+
+  console.log(queueName, payload);
+
+  try{
+      sendMessage(queueName, payload);
+  }catch(error){
+      console.log(error);
   }
 
-
+}
 
 module.exports = {
     createreview,

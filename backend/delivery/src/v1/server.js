@@ -5,6 +5,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const config = require('./config'); //imporitng MONGODB_URI, PORT
+const amqpServer = require('./utils/amqpServer');
 
 const app = express();
 
@@ -15,6 +16,9 @@ app.use(cors());
 const deliveryRoutes = require('./routes/deliveries');
 
 app.use('/api', deliveryRoutes);
+
+//rabbitmq connection
+amqpServer.connect();
 
 //mongoDB connection
 mongoose.set('strictQuery', false);

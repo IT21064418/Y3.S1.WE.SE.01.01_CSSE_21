@@ -72,10 +72,34 @@ const updateitem = async (req, res) => {
     res.status(200).json(item)
   }
 
+const addReview = async (productID, itemReview) => {
+  try{
+    const item = await Item.findById(productID);
+
+    if(!item){
+      console.log("Product not found");
+      return 'Product not found';
+    }
+
+    console.log(itemReview);
+
+    item.reviews.push(itemReview);
+
+    await item.save();
+
+    console.log(`Review added to product ${productID}`);
+    return `Review added to product ${productID}`;
+  } catch(error){
+    console.log(error);
+    return error;
+  }
+}
+
 module.exports = {
     createitem,
     getallitems,
     getitem,
     deleteitem,
     updateitem,
+    addReview
 }

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+const amqp = require('amqplib');
 const Delivery = require('../model/delivery');
+const { connect, sendMessage } = require('../utils/amqpServer');
 
 function validateDelivery(delivery){
 
@@ -63,6 +65,8 @@ exports.calcDeliveryFee = (req, res) => {
 
 exports.createDelivery = async (req, res) => {
 
+    const userId = req.user;
+
     const deliveryObj = {
 
         deliveryId: new mongoose.Types.ObjectId(),
@@ -83,7 +87,20 @@ exports.createDelivery = async (req, res) => {
         try{
             const newDelivery = new Delivery(deliveryObj);
             const delivery = await newDelivery.save();
-    
+
+            const userDelivery = {
+                deliveryId: delivery.deliveryId,
+                orderedItems: delivery.orderedItems,
+                deliveryAddress: delivery.deliveryAddress,
+                deliveryDate: delivery.deliveryDate,
+                deliveryService: delivery.deliveryService,
+                deliveryStatus: delivery.deliveryStatus
+            }
+
+            const payload = { userId, userDelivery};
+            console.log(payload);
+            prepForQueue("USER",payload);
+
             if(delivery){
                 return res.status(201).json({ delivery });
             }
@@ -133,6 +150,18 @@ exports.deleteDelivery = async (req, res) => {
         });
      }catch (error){
         return res.status(400).json({ error });
+    }
+
+}
+
+async function prepForQueue(queueName, payload) {
+
+    console.log(queueName, payload);
+
+    try{
+        sendMessage(queueName, payload)
+    }catch(error){
+        console.log(error);
     }
 
 }

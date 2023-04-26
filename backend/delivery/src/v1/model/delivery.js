@@ -55,4 +55,4 @@ const deliverySchema = new mongoose.Schema({
 
 }, {timestamps: true});
 
-module.exports = mongoose.model('Delivey',deliverySchema);
+module.exports = mongoose.model('Delivery',deliverySchema);
