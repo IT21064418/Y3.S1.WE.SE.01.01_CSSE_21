@@ -69,7 +69,6 @@ exports.createDelivery = async (req, res) => {
 
     const deliveryObj = {
 
-        deliveryId: new mongoose.Types.ObjectId(),
         buyerId: req.body.buyerId,
         orderedItems: req.body.orderedItems,
         totalWeight: req.body.totalWeight,
@@ -89,7 +88,7 @@ exports.createDelivery = async (req, res) => {
             const delivery = await newDelivery.save();
 
             const userDelivery = {
-                deliveryId: delivery.deliveryId,
+                deliveryId: delivery._id,
                 orderedItems: delivery.orderedItems,
                 deliveryAddress: delivery.deliveryAddress,
                 deliveryDate: delivery.deliveryDate,

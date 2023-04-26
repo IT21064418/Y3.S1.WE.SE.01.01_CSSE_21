@@ -5,7 +5,8 @@ const paymentMethods = ['creditCard', 'paypal', 'payhere'];
 const paymentSchema = new mongoose.Schema({
 
     buyerId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
         trim: true
     },

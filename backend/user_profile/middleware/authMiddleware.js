@@ -8,6 +8,7 @@ function authenticateUser(req, res, next) {
   }
   try {
     const decoded = jwt.verify(token.split(' ')[1], config.jwtSecret);
+    console.log(decoded);
     req.user = decoded.id;
     next();
   } catch (err) {

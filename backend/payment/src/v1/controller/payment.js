@@ -10,12 +10,12 @@ async function sendEmail(to, emailContent) {
 
     if (domain === 'gmail.com'){
         smtpSettings = {
-            host: 'smtp.mail.yahoo.com',
+            host: 'smtp.gmail.com',
             port: 465,
             secure: true,
             auth: {
-                user: 'slherbals12@yahoo.com',
-                pass: 'SlherbalsForDsProject12#'
+                user: 'lankaHerbals31@gmail.com',
+                pass: 'dwgobkavdgunzren'
             }
         };
     } else if (domain === 'yahoo.com'){
@@ -24,8 +24,8 @@ async function sendEmail(to, emailContent) {
             port: 465,
             secure: true,
             auth:{
-                user: 'slherbals12@yahoo.com',
-                pass: 'SlherbalsForDsProject12#'
+                user: 'lankaHerbals31@gmail.com',
+                pass: 'dwgobkavdgunzren'
             }
         };
     } else {
@@ -85,14 +85,14 @@ exports.addPayment = async (req, res) => {
         const newPayment = new Payment(paymentObj);
         const payment = await newPayment.save();
         if(payment){
-            // let email = paymentConfirmation(paymentObj.buyerName, paymentObj.creditCard, paymentObj.buyerEmail);
+            let email = paymentConfirmation(paymentObj.buyerName, paymentObj.creditCard, paymentObj.buyerEmail);
 
-            // if(email === true){
-            //     return res.status(201).json("Payment Succesfull");
-            // }
-            // else{
-            //     return res.status(500).json(`Cannot send Payment email confirmation: ${email}`);
-            // }              
+            if(email === true){
+                return res.status(201).json("Payment Succesfull");
+            }
+            else{
+                return res.status(500).json(`Cannot send Payment email confirmation: ${email}`);
+            }              
             return res.status(201).json("Payment Succesfull");
         }
     } catch (error){

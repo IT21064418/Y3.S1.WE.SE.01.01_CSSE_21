@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
-const deliveryStatus = ['pending', 'confirmed', 'dispatched', 'delivered'];
-const deliveryServices = ['ups','fedex','dhl'];
-
-const deliverySchema = new mongoose.Schema({
-
+const OrderSchema = mongoose.Schema({
     buyerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -21,13 +17,35 @@ const deliverySchema = new mongoose.Schema({
         ],
         required: true
     },
-    totalWeight: {
+    paymentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Payment',
+        required: true,
+    },
+    amount: {
         type: Number,
+        required: true,
+        trim: true
+    },
+    paymentMethod: {
+        type: String,
+        required: true
+    },
+    buyerEmail: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        required: true
+    },
+    deliveryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Delivery',
         required: true
     },
     deliveryService: {
         type: String,
-        enum: deliveryServices,
         required: true
     },
     deliveryAddress: {
@@ -35,20 +53,13 @@ const deliverySchema = new mongoose.Schema({
         trim: true,
         required: true
     },
-    deliveryDate: {
-        type: Date,
-        required: true
-    },
-    deliveryFee: {
-        type: Number,
-        required: true
-    },
     deliveryStatus: {
         type: String,
-        enum: deliveryStatus,
-        default: 'pending'
+        default: 'pending',
+        required: true
     }
-
 }, {timestamps: true});
 
-module.exports = mongoose.model('Delivery',deliverySchema);
+const Order = mongoose.model('Order', OrderSchema);
+
+module.exports = Order;

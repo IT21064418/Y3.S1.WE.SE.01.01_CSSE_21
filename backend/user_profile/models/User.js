@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
   deliveries: [
     {
       deliveryId:{
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Delivery'
       },
       orderedItems:{
         type: [

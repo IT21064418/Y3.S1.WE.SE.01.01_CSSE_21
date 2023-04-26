@@ -1,5 +1,4 @@
 const amqp = require('amqplib');
-const { updateDelivery } = require('../controller/delivery-amqpServices');
 
 var channel, connection
 
@@ -10,21 +9,12 @@ exports.connect = async() => {
     try{
         connection = await amqp.connect(amqpServer);
         channel = await connection.createChannel();
-        await channel.assertQueue("DELIVERY");
+        await channel.assertQueue("ORDER");
         console.log("amqp server running on:",amqpServer);
     }catch(error){
         console.log(error);
     }
 
-}
-
-exports.consumefromQueue = () => {
-    channel.consume("DELIVERY", data => {
-        const { deliveryId, deliveryStatus } = JSON.parse(data.content);
-        console.log(deliveryId, deliveryStatus);
-        channel.ack(data);
-        updateDelivery(deliveryId, deliveryStatus);
-    });
 }
 
 exports.sendMessage = async (queueName, data) => {
