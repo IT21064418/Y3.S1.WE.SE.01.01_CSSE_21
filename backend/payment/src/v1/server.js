@@ -27,7 +27,7 @@ mongoose.connect(config.MONGODB_URI, {
     console.log("Database connected");
 }).catch((err) => console.log('DB connection error', err))
 
-//server
+//initializing server
 app.listen(config.PORT,() => {
     console.log(`payment service is running on port ${config.PORT}`);
 });

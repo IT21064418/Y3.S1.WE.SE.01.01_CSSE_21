@@ -27,7 +27,6 @@ app.get('/api/ratingandreviews/:id', (req, res) => {
     res.json(reviewData);
   });
 
-
 //connect to db
 mongoose.connect(config.MONGODB_URI, {
     useNewUrlParser: true,
