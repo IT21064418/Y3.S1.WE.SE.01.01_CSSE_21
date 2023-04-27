@@ -4,12 +4,18 @@ const express = require('express')
 const mongoose = require('mongoose')
 const item_management = require('./routes/itemmanagement');
 const config = require('./config');
+const amqpServer = require('./utils/amqpServer');
 
 //express app
 const app = express();
 
 //middleware
 app.use(express.json())
+
+//rabbitMq server
+amqpServer.connect().then(() => {
+    amqpServer.consumefromQueue(); 
+});
 
 //routes
 app.use('/api/itemmanagement',item_management)

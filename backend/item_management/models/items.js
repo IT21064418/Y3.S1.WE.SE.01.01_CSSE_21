@@ -30,7 +30,20 @@ const itemschema = new Schema({
     Warranty_Information:{
         type: String,
         required : true
-    }
+    },
+    reviews: [
+        {
+            review_title:{
+                type: String,
+            },
+            rating:{
+                type: Number,
+            },
+            Description:{
+                type: String,
+            }
+        }
+    ]
 }, {timestamps:true})
 
 module.exports=mongoose.model('items',itemschema)

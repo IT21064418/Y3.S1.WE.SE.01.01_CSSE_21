@@ -1,7 +1,5 @@
-version: "3.9"
-
-service:
-  #Microservices images
+services:
+  # Microservices images
   gateway-service:
     build: ./gateway
     ports:
@@ -16,7 +14,7 @@ service:
       - gateway-service
     restart: always
   
-  userProfile-service:
+  userprofile-service:
     build: ./user_profile
     ports:
       - "5001:5001"
@@ -25,7 +23,7 @@ service:
       - auth-service
     restart: always
 
-  itemManagement-service:
+  item-management-service:
     build: ./item_management
     ports:
       - "4001:4001"
@@ -34,15 +32,15 @@ service:
       - auth-service
     restart: always
 
-  ratingsAndReviews-service:
+  ratings-and-reviews-service:
     build: ./ratingandreviews
     ports:
       - "4000:4000"
     depends_on:
       - gateway-service
       - auth-service
-      - userProfile-service
-      - itemManagement-service
+      - userprofile-service
+      - item-management-service
     restart: always
 
   delivery-service:
@@ -52,8 +50,9 @@ service:
     depends_on: 
       - gateway-service
       - auth-service
-      - userProfile-service
-      - itemManagement-service
+      - userprofile-service
+      - item-management-service
+    restart: always
 
   payment-service:
     build: ./payment/src/v1
@@ -62,8 +61,8 @@ service:
     depends_on:
       - gateway-service
       - auth-service
-      - userProfile-service
-      - itemManagement-service
+      - userprofile-service
+      - item-management-service
       - delivery-service
     restart: always
 
@@ -74,8 +73,19 @@ service:
     depends_on:
       - gateway-service
       - auth-service
-      - userProfile-service
-      - itemManagement-service
+      - userprofile-service
+      - item-management-service
     restart: always
 
-  
+  order-service:
+    build: ./order-management
+    ports:
+      - "8007:8007"
+    depends_on:
+      - gateway-service
+      - auth-service
+      - userprofile-service
+      - item-management-service
+      - delivery-service
+      - payment-service
+    restart: always 

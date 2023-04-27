@@ -48,10 +48,6 @@ const UserSchema = Schema({
 
 }, {minimize: false});
 
-
-
-
-
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('buyer', UserSchema);
 
 module.exports = User;

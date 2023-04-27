@@ -9,11 +9,11 @@ async function getUserProfile(req, res) {
       res.status(404).json({ error: 'User not found.' });
     } else {
       const currentUserRole = req.user.role;
-      if (currentUserRole === 'admin' || currentUserRole === user.role) {
+      // if (currentUserRole === 'admin' || currentUserRole === user.role) {
         res.json(user);
-      } else {
-        res.status(403).json({ error: 'Access denied.' });
-      }
+      // } else {
+      //   res.status(403).json({ error: 'Access denied.' });
+      // }
     }
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -65,8 +65,34 @@ async function deleteUserProfile(req, res) {
   }
 }
 
+async function addDelivery(userId, userDelivery) {
+
+  try{
+    const user = await User.findById(userId);
+
+    if(!user){
+      console.log("User not found");
+      return 'User not found';
+    }
+
+    console.log(userDelivery);
+
+    user.deliveries.push(userDelivery);
+
+    await user.save();
+
+    console.log(`Delivery added to user ${userId}`);
+    return `Delivery added to user ${userId}`;
+  } catch(error){
+    console.log(error);
+    return error;
+  }
+
+}
+
 module.exports = {
   getUserProfile,
   updateUserProfile,
   deleteUserProfile,
+  addDelivery
 };

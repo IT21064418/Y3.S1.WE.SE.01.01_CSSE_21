@@ -5,7 +5,8 @@ const paymentMethods = ['creditCard', 'paypal', 'payhere'];
 const paymentSchema = new mongoose.Schema({
 
     buyerId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
         trim: true
     },
@@ -50,6 +51,7 @@ const paymentSchema = new mongoose.Schema({
         ],
         required: true
     }
+    
 }, {timestamps: true});
 
 module.exports = mongoose.model('Payment', paymentSchema);

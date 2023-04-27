@@ -5,13 +5,9 @@ const deliveryServices = ['ups','fedex','dhl'];
 
 const deliverySchema = new mongoose.Schema({
 
-    deliveryId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Delivery',
-        required: true
-    },
     buyerId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     orderedItems: {
@@ -55,4 +51,4 @@ const deliverySchema = new mongoose.Schema({
 
 }, {timestamps: true});
 
-module.exports = mongoose.model('Delivey',deliverySchema);
+module.exports = mongoose.model('Delivery',deliverySchema);

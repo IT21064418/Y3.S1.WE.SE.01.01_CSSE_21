@@ -4,6 +4,36 @@ const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  deliveries: [
+    {
+      deliveryId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Delivery'
+      },
+      orderedItems:{
+        type: [
+          {
+              name: String,
+              price: Number,
+              quantity: Number,
+              weight: Number
+          }
+        ]
+      },
+      deliveryAddress: {
+        type: String,
+      },
+      deliveryDate: {
+        type: Date,
+      },
+      deliveryService: {
+        type: String,
+      },
+      deliveryStatus: {
+        type: String,
+      }
+    }
+  ],
   role: { type: String, enum: ['buyer', 'seller', 'admin'], required: true },
 });
 

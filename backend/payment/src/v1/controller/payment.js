@@ -3,19 +3,22 @@ const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 
+//sends an email to the buyers email with payment confirmation
 async function sendEmail(to, emailContent) { 
 
+    //get the domain of the email service of the buyer
     const domain = to.split('@')[1];
     let smtpSettings;
 
+    //configure smtp settings according to the buyers email service
     if (domain === 'gmail.com'){
         smtpSettings = {
-            host: 'smtp.mail.yahoo.com',
+            host: 'smtp.gmail.com',
             port: 465,
             secure: true,
             auth: {
-                user: 'slherbals12@yahoo.com',
-                pass: 'SlherbalsForDsProject12#'
+                user: 'lankaHerbals31@gmail.com',
+                pass: 'dwgobkavdgunzren'
             }
         };
     } else if (domain === 'yahoo.com'){
@@ -24,8 +27,8 @@ async function sendEmail(to, emailContent) {
             port: 465,
             secure: true,
             auth:{
-                user: 'slherbals12@yahoo.com',
-                pass: 'SlherbalsForDsProject12#'
+                user: 'lankaHerbals31@gmail.com',
+                pass: 'dwgobkavdgunzren'
             }
         };
     } else {
@@ -34,6 +37,7 @@ async function sendEmail(to, emailContent) {
 
     const transporter = nodemailer.createTransport(smtpSettings);
 
+    //sends the email
     const info = await transporter.sendMail({
         from: 'slherbals12@gmail.com',
         to,
@@ -47,13 +51,14 @@ async function sendEmail(to, emailContent) {
 
 }
 
+//construct the email for the buyer
 async function paymentConfirmation(buyerName, creditCard, email){
 
     const templateFile = path.join(__dirname, '..', 'emails', 'templates', 'paymentSuccess.json');
     const emailContent = JSON.parse(fs.readFileSync(templateFile));
 
-    emailContent.text.replace('{{name}}',buyerName);
-    emailContent.text.replace('{{amount}}',creditCard.amount);
+    emailContent.text.replace('{{name}}',buyerName); //put the buyer name in the email
+    emailContent.text.replace('{{amount}}',creditCard.amount); // put the payment amount in email
 
     let emailConf = sendEmail(email, emailContent);
 
@@ -66,6 +71,7 @@ async function paymentConfirmation(buyerName, creditCard, email){
 
 }
 
+//adding a payment to the databse
 exports.addPayment = async (req, res) => {
 
     const paymentObj = {
@@ -85,15 +91,14 @@ exports.addPayment = async (req, res) => {
         const newPayment = new Payment(paymentObj);
         const payment = await newPayment.save();
         if(payment){
-            // let email = paymentConfirmation(paymentObj.buyerName, paymentObj.creditCard, paymentObj.buyerEmail);
-
-            // if(email === true){
-            //     return res.status(201).json("Payment Succesfull");
-            // }
-            // else{
-            //     return res.status(500).json(`Cannot send Payment email confirmation: ${email}`);
-            // }              
-            return res.status(201).json("Payment Succesfull");
+            let email = paymentConfirmation(paymentObj.buyerName, paymentObj.creditCard, paymentObj.buyerEmail);
+            //checking if the confirmation email has been sent 
+            if(email === true){
+                return res.status(201).json("Payment Succesfull");
+            }
+            else{
+                return res.status(500).json(`Cannot send Payment email confirmation: ${email}`);
+            }             
         }
     } catch (error){
         return res.status(400).json({ error });
@@ -101,6 +106,7 @@ exports.addPayment = async (req, res) => {
 
 }
 
+//get all the payments in the database
 exports.getPayments = async (req, res) => {
 
     try {
@@ -112,6 +118,7 @@ exports.getPayments = async (req, res) => {
 
 }
 
+//retrieve a paymnet from paymentId
 exports.getPayment = async (req, res) => {
 
     try{
@@ -129,6 +136,7 @@ exports.getPayment = async (req, res) => {
     
 }
 
+//delete a paymnt from the database
 exports.deletePayment = async (req, res) => {
 
     try{

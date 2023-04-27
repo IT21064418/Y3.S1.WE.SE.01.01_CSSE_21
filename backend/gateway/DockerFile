@@ -1,6 +1,5 @@
 FROM node:alpine
-WORKDIR /backend/gateway/src
-COPY package*.json .
-RUN npm ci
+WORKDIR /main/app
 COPY . .
+RUN npm install
 CMD ["npm", "start"]
