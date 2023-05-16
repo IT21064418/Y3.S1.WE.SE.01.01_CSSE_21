@@ -4,7 +4,7 @@ var channel, connection
 
 exports.connect = async() => {
 
-    const amqpServer = "amqp://guest:guest@localhost:5672";
+    const amqpServer = "amqp://guest:guest@rabbitmq:5672";
 
     try{
         connection = await amqp.connect(amqpServer);
