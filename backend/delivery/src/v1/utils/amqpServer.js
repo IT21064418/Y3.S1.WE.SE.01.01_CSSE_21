@@ -5,7 +5,7 @@ var channel, connection //declare variable for amqp connection and channel
 
 exports.connect = async() => {
 
-    const amqpServer = "amqp://guest:guest@localhost:5672"; //amqp server
+    const amqpServer = "amqp://guest:guest@rabbitmq:5672"; //amqp server
 
     try{
         connection = await amqp.connect(amqpServer); //create connection
