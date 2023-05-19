@@ -3,7 +3,7 @@ const { addPayment, getPayments, getPayment, deletePayment } = require('../contr
 const { authenticateUser } = require('../middlewares/auth'); //import authentication function
 const router = express.Router();
 
-router.post('/v1/payments',authenticateUser, addPayment); //create payment route
+router.post('/v1/payments', addPayment); //create payment route, removed authentication for developing 
 router.get('/v1/payments', getPayments); //get all payments route
 router.get('/v1/payments/:id', getPayment); //get payment by id route
 router.delete('/v1/payments/:id', deletePayment); // delete payment route

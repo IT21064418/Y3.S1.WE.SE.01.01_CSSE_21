@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors');
 const item_management = require('./routes/itemmanagement');
 const config = require('./config');
 const amqpServer = require('./utils/amqpServer');
@@ -11,6 +12,7 @@ const app = express();
 
 //middleware
 app.use(express.json())
+app.use(cors());
 
 //rabbitMq server
 amqpServer.connect().then(() => {

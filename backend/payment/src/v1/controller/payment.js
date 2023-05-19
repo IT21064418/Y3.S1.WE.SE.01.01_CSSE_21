@@ -57,8 +57,8 @@ async function paymentConfirmation(buyerName, creditCard, email){
     const templateFile = path.join(__dirname, '..', 'emails', 'templates', 'paymentSuccess.json');
     const emailContent = JSON.parse(fs.readFileSync(templateFile));
 
-    emailContent.text.replace('{{name}}',buyerName); //put the buyer name in the email
-    emailContent.text.replace('{{amount}}',creditCard.amount); // put the payment amount in email
+    emailContent.text = emailContent.text.replace('{{name}}',creditCard.cardHolderName); //put the buyer name in the email
+    emailContent.text = emailContent.text.replace('{{amount}}',creditCard.amount); // put the payment amount in email
 
     let emailConf = sendEmail(email, emailContent);
 
@@ -91,7 +91,7 @@ exports.addPayment = async (req, res) => {
         const newPayment = new Payment(paymentObj);
         const payment = await newPayment.save();
         if(payment){
-            let email = paymentConfirmation(paymentObj.buyerName, paymentObj.creditCard, paymentObj.buyerEmail);
+            let email = await paymentConfirmation(paymentObj.buyerName, paymentObj.creditCard, paymentObj.buyerEmail);
             //checking if the confirmation email has been sent 
             if(email === true){
                 return res.status(201).json("Payment Succesfull");
