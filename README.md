@@ -11,6 +11,7 @@
 
 + Frontend - Vite.js
 + Backend - Express.js, Node.js
++ Database - MongoDB
 + Containerization - Docker
 + Message Broker - RabbitMQ
 + End Point Testing - Postman
