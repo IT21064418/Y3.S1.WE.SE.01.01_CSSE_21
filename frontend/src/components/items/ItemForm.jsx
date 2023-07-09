@@ -51,13 +51,6 @@ const ItemForm = () => {
     <form className="create" onSubmit={handleSubmit}>
       <h3>Add a New Item</h3>
 
-      <label>Product ID:</label>
-      <input
-        type="text"
-        onChange={(e) => setProductId(e.target.value)}
-        value={productId}
-      />
-
       <label>Product Name:</label>
       <input
         type="text"

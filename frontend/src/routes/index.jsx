@@ -22,6 +22,7 @@ import EmpDash from '../pages/empdash/dash'
 import EmpUpdate from '../pages/empdash/empupdate'
 import EmpDanger from '../pages/empdash/empdanger'
 import AdminDash from '../pages/admindash/dash'
+import AdminDashboard from '../pages/AdminDashboard'
 
 
 
@@ -39,7 +40,7 @@ const AnimatedRoutes = () => {
         <Route path="*" element={<NotFound />} />
         <Route path="/additems" element={<Additems />} /> 
         <Route path="/displayitems" element={<Displayitems />} /> 
-        <Route path="/addreview" element={<Addreview />} /> 
+        <Route path="/addreview/:id" element={<Addreview />} /> 
 
         {/* Login Selection */}
 					<Route path="/login" element={<Login />} />
@@ -64,6 +65,7 @@ const AnimatedRoutes = () => {
           
 					{/* Admin Dashboard */}
 					<Route path="/admindash" element={<AdminDash />} />
+          <Route path='/admin' element={<AdminDashboard/>}/>
 
       </Routes>
     </AnimatePresence>

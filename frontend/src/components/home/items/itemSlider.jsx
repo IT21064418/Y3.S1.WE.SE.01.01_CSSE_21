@@ -43,12 +43,7 @@ const ItemSlider = (props) => {
   return (
     <div className="mx-6 mt-10 relative">
       <Swiper ref={sliderRef} spaceBetween={30} slidesPerView={4} onSwiper={handleSwiper}>
-        <SwiperSlide>
           <ItemCard />
-          <ItemCard />
-          <ItemCard />
-          <ItemCard />
-        </SwiperSlide>
       </Swiper>
       <div className="mt-7 w-full flex justify-end">
         <button className={`prev-arrow w-10 h-7 bg-red bg-green-800 text-white mr-2 rounded-sm transform -translate-y-1/2  shadow-md z-10 ${isBeginning ? 'opacity-50 cursor-default' : 'cursor-pointer'}`} onClick={handlePrev} disabled={isBeginning}>
