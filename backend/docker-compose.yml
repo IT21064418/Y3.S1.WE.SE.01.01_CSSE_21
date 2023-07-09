@@ -1,0 +1,108 @@
+services:
+  # Microservices images
+  gateway-service:
+    build: ./gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+    restart: always
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "5000:5000"
+    depends_on:
+      - rabbitmq
+      - gateway-service
+    restart: always
+  
+  userprofile-service:
+    build: ./user_profile
+    ports:
+      - "5001:5001"
+    depends_on:
+      - rabbitmq
+      - gateway-service
+      - auth-service
+    restart: always
+
+  item-management-service:
+    build: ./item_management
+    ports:
+      - "4001:4001"
+    depends_on:
+      - rabbitmq
+      - gateway-service
+      - auth-service
+    restart: always
+
+  ratings-and-reviews-service:
+    build: ./ratingandreviews
+    ports:
+      - "4000:4000"
+    depends_on:
+      - rabbitmq
+      - gateway-service
+      - auth-service
+      - userprofile-service
+      - item-management-service
+    restart: always
+
+  delivery-service:
+    build: ./delivery/src/v1
+    ports: 
+      - "8004:8004"
+    depends_on: 
+      - rabbitmq
+      - gateway-service
+      - auth-service
+      - userprofile-service
+      - item-management-service
+    restart: always
+
+  payment-service:
+    build: ./payment/src/v1
+    ports:
+      - "8003:8003"
+    depends_on:
+      - rabbitmq
+      - gateway-service
+      - auth-service
+      - userprofile-service
+      - item-management-service
+      - delivery-service
+    restart: always
+
+  cart-service:
+    build: ./cart
+    ports: 
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+      - gateway-service
+      - auth-service
+      - userprofile-service
+      - item-management-service
+    restart: always
+
+  order-service:
+    build: ./order-management
+    ports:
+      - "8007:8007"
+    depends_on:
+      - rabbitmq
+      - gateway-service
+      - auth-service
+      - userprofile-service
+      - item-management-service
+      - delivery-service
+      - payment-service
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always

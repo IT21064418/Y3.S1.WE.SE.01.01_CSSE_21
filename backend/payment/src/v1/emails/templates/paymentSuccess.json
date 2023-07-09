@@ -1,0 +1,4 @@
+{
+    "subject": "Payment Confirmation",
+    "text":"Dear {{ name }},\n\nYour payment of RS:{{ amount }} for your Items has been recieved.\nslHerbals Team"
+}
