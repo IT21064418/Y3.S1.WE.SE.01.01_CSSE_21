@@ -1,8 +1,0 @@
-{
-  "extends": ["eslint:recommended", "react-app", "prettier"],
-  "rules": {
-    "no-unused-vars": "error",
-    "react-hooks/exhaustive-deps": "off",
-    "jsx-a11y/alt-text": "off"
-  }
-}
