@@ -7,7 +7,6 @@ const paymentSchema = new mongoose.Schema({
     buyerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
         trim: true
     },
     amount: {
@@ -39,7 +38,6 @@ const paymentSchema = new mongoose.Schema({
     },
     buyerEmail: {
         type: String,
-        required: true
     },
     purchasedItems: {
         type: [

@@ -17,7 +17,7 @@ router.get('/', getallitems)
 router.get('/:id',getitem)
 
 //POST a new 
-router.post('/',authenticateUser, createitem)
+router.post('/', createitem)//removed user authentication for testing purposes
 
 //DELETE a 
 router.delete('/:id',authenticateUser, deleteitem)

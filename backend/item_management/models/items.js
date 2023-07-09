@@ -36,7 +36,7 @@ const itemschema = new Schema({
             review_title:{
                 type: String,
             },
-            rating:{
+            c:{
                 type: Number,
             },
             Description:{

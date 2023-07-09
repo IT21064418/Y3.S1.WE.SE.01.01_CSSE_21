@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const deliveryStatus = ['pending', 'confirmed', 'dispatched', 'delivered'];
+const deliveryStatus = ['pending', 'processing', 'accepted'];
 const deliveryServices = ['ups','fedex','dhl'];
 
 const deliverySchema = new mongoose.Schema({
